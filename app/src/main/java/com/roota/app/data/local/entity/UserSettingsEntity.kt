@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user_settings")
 data class UserSettingsEntity(
-    @PrimaryKey val id: Int = 1,  // Singleton
+    @PrimaryKey val id: Int = 1,
     val theme: String = "dark",
-    val language: String = "ru"
+    val language: String = "ru",
+    val onboardingCompleted: Boolean = false
 )

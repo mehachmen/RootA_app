@@ -21,6 +21,8 @@ data class TaskEntity(
     val title: String,
     val description: String? = null,
     val status: String = "NOT_STARTED",
+    val priority: String = "MEDIUM",
+    val deadline: Long? = null,
     val posX: Float = 100f,
     val posY: Float = 100f,
     val createdAt: Long = System.currentTimeMillis(),

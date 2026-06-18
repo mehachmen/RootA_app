@@ -1,64 +1,152 @@
 package com.roota.app.presentation.project_create
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.roota.app.presentation.ui.theme.RootATheme
+import com.roota.app.R
+import com.roota.app.presentation.ui.components.ColorTagPicker
+import com.roota.app.presentation.ui.components.LinkColorPicker
+import com.roota.app.presentation.ui.components.ProjectPreviewCard
+import com.roota.app.presentation.ui.components.RootATextField
+import com.roota.app.presentation.ui.components.RootATopBar
+import com.roota.app.presentation.ui.theme.AccentGreen
+import com.roota.app.presentation.ui.theme.ButtonShape
+import com.roota.app.presentation.ui.theme.DarkBackground
+import com.roota.app.presentation.ui.theme.Dimens
+import com.roota.app.presentation.ui.theme.TextSecondary
 
-@OptIn(ExperimentalMaterial3Api::class) // чтобы не ругался
 @Composable
 fun CreateProjectScreen(
-    onProjectCreated: () -> Unit,
+    onProjectCreated: (Long) -> Unit,
+    onCancel: () -> Unit,
     viewModel: CreateProjectViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    RootATheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Новый проект") })
-            }
-        ) { padding ->
-            Column(
+    LaunchedEffect(state.error) {
+        state.error?.let { snackbarHostState.showSnackbar(it) }
+    }
+
+    Scaffold(
+        containerColor = DarkBackground,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            RootATopBar(
+                title = stringResource(R.string.create_project_screen_title),
+                onBackClick = onCancel
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DarkBackground)
+                .padding(padding)
+                .padding(Dimens.screenPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                text = stringResource(R.string.create_project_name_section),
+                style = MaterialTheme.typography.labelMedium,
+                color = TextSecondary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            RootATextField(
+                value = state.title,
+                onValueChange = viewModel::onTitleChange,
+                label = stringResource(R.string.create_project_name_hint)
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
+
+            Text(
+                text = stringResource(R.string.create_project_desc_section),
+                style = MaterialTheme.typography.labelMedium,
+                color = TextSecondary
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            RootATextField(
+                value = state.description,
+                onValueChange = viewModel::onDescriptionChange,
+                label = stringResource(R.string.create_project_desc_hint),
+                minLines = 3
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
+
+            ColorTagPicker(
+                selectedArgb = state.colorTagArgb,
+                onColorSelected = viewModel::onColorTagChange
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
+
+            ProjectPreviewCard(
+                title = state.title,
+                description = state.description,
+                colorTagArgb = state.colorTagArgb
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
+
+            LinkColorPicker(
+                selectedArgb = state.linkColorArgb,
+                onColorSelected = viewModel::onLinkColorChange
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
+
+            Button(
+                onClick = { viewModel.createProject(onCreated = onProjectCreated) },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .height(Dimens.buttonHeight),
+                enabled = state.title.isNotBlank() && !state.isLoading,
+                shape = ButtonShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (state.title.isNotBlank()) AccentGreen else DarkBackground,
+                    contentColor = if (state.title.isNotBlank()) Color.Black else TextSecondary,
+                    disabledContainerColor = DarkBackground
+                )
             ) {
-                OutlinedTextField(
-                    value = state.title,
-                    onValueChange = { viewModel.onTitleChange(it) },
-                    label = { Text("Название проекта") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                OutlinedTextField(
-                    value = state.description,
-                    onValueChange = { viewModel.onDescriptionChange(it) },
-                    label = { Text("Описание") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 3
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Button(
-                    onClick = {
-                        viewModel.createProject()
-                        onProjectCreated()
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = state.title.isNotBlank()
-                ) {
-                    Text("Создать проект")
+                if (state.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = Color.Black,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.create_project_save),
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
         }

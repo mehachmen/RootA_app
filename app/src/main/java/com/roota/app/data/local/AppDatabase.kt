@@ -19,7 +19,7 @@ import com.roota.app.data.local.entity.UserSettingsEntity
         DependencyEntity::class,
         UserSettingsEntity::class
     ],
-    version = 1,                    // пока оставляем 1
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

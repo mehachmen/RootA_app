@@ -34,6 +34,7 @@ fun RootATheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
         typography = Typography,
+        shapes = RootAShapes,
         content = content
     )
 }

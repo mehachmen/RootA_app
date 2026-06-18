@@ -39,4 +39,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDependencyDao(database: AppDatabase) = database.dependencyDao()
+
+    @Provides
+    @Singleton
+    fun provideUserSettingsDao(database: AppDatabase) = database.userSettingsDao()
 }

@@ -1,3 +1,130 @@
 <resources>
     <string name="app_name">RootA</string>
+
+    <!-- SCR-01 Onboarding -->
+    <string name="onboarding_tagline">Графовая система задач</string>
+    <string name="onboarding_subtitle">Превращай хаос задач\nв понятную структуру</string>
+    <string name="onboarding_start">Начать</string>
+    <string name="onboarding_features">Быстрый доступ • Визуальный прогресс • Логика зависимостей</string>
+
+    <!-- SCR-02 Create Project -->
+    <string name="create_project_screen_title">Создать проект</string>
+    <string name="create_project_title">Новый проект</string>
+    <string name="create_project_name_section">НАЗВАНИЕ ПРОЕКТА</string>
+    <string name="create_project_name_label">Название проекта</string>
+    <string name="create_project_name_hint">Например: Дипломная работа</string>
+    <string name="create_project_desc_section">ОПИСАНИЕ ПРОЕКТА</string>
+    <string name="create_project_desc_label">Описание</string>
+    <string name="create_project_desc_hint">Краткое описание цели проекта…</string>
+    <string name="create_project_color_tag">ЦВЕТОВАЯ МЕТКА</string>
+    <string name="create_project_preview">ПРЕДПРОСМОТР</string>
+    <string name="create_project_preview_title">Название проекта</string>
+    <string name="create_project_preview_desc">Описание проекта</string>
+    <string name="create_project_link_color">Цвет связей на графе</string>
+    <string name="create_project_submit">Создать проект</string>
+    <string name="create_project_save">Сохранить</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_projects">Проекты</string>
+    <string name="nav_progress">Прогресс</string>
+    <string name="nav_settings">Настройки</string>
+
+    <plurals name="projects_count">
+        <item quantity="one">%d проект</item>
+        <item quantity="few">%d проекта</item>
+        <item quantity="many">%d проектов</item>
+        <item quantity="other">%d проектов</item>
+    </plurals>
+
+    <!-- SCR-03 Project List -->
+    <string name="projects_title">Мои проекты</string>
+    <string name="projects_empty">Нет проектов. Создайте первый!</string>
+    <string name="projects_fab">Новый проект</string>
+    <string name="projects_progress">%1$d%% выполнено</string>
+    <string name="projects_tasks_count">%1$d задач</string>
+    <string name="settings">Настройки</string>
+
+    <!-- SCR-04 Graph -->
+    <string name="graph_title">Граф проекта</string>
+    <string name="graph_pick_deps">Выбор зависимостей</string>
+    <string name="graph_align">Выровнять</string>
+    <string name="graph_add_task">Добавить задачу</string>
+    <string name="graph_progress">Прогресс</string>
+    <string name="error_cycle">Циклическая зависимость невозможна!</string>
+    <string name="error_parents_not_done">Сначала выполните родительские задачи!</string>
+
+    <!-- SCR-05 Task Detail -->
+    <string name="task_detail_title">Карточка задачи</string>
+    <string name="task_detail_status">Статус</string>
+    <string name="task_detail_dependencies">Зависит от</string>
+    <string name="task_detail_no_dependencies">Нет родительских задач</string>
+    <string name="task_detail_edit">Редактировать</string>
+    <string name="task_detail_priority">Приоритет</string>
+    <string name="task_detail_deadline">Дедлайн</string>
+    <string name="task_not_found">Задача не найдена</string>
+
+    <!-- SCR-06 Task Edit -->
+    <string name="task_edit_new">Новая задача</string>
+    <string name="task_edit_existing">Редактировать задачу</string>
+    <string name="task_edit_name_label">Название задачи</string>
+    <string name="task_edit_desc_label">Описание</string>
+    <string name="task_edit_status">Статус</string>
+    <string name="task_edit_priority">Приоритет</string>
+    <string name="task_edit_deadline">Дедлайн</string>
+    <string name="task_edit_deadline_hint">дд:мм:гггг</string>
+    <string name="task_edit_deps">Зависит от (родительские задачи)</string>
+    <string name="task_edit_deps_empty">Другие задачи в проекте пока отсутствуют</string>
+    <string name="task_edit_pick_canvas">На холсте</string>
+    <string name="task_edit_save">Сохранить задачу</string>
+
+    <!-- Task Status -->
+    <string name="status_not_started">Не начата</string>
+    <string name="status_in_progress">В процессе</string>
+    <string name="status_completed">Выполнена</string>
+
+    <!-- SCR-07 Progress -->
+    <string name="progress_title">Прогресс проекта</string>
+    <string name="progress_done_label">Выполнено</string>
+    <string name="progress_stats_title">Статистика</string>
+    <string name="progress_total">Всего задач</string>
+    <string name="progress_completed">Выполнено</string>
+    <string name="progress_in_progress">В процессе</string>
+    <string name="progress_not_started">Не начато</string>
+
+    <!-- SCR-08 Settings -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_appearance">Внешний вид</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_dark">Тёмная тема</string>
+    <string name="settings_language_section">Язык</string>
+    <string name="settings_language">Язык интерфейса</string>
+    <string name="settings_language_ru">Русский</string>
+    <string name="settings_storage_section">Хранилище</string>
+    <string name="settings_storage_title">Локальное хранилище</string>
+    <string name="settings_storage_desc">Все данные сохраняются только на устройстве. Облачная синхронизация будет в следующих версиях.</string>
+    <string name="settings_about_section">О приложении</string>
+    <string name="settings_about_title">RootA</string>
+    <string name="settings_about_version">Версия 0.1 (MVP)</string>
+    <string name="settings_about_desc">Графовая система задач</string>
+    <string name="settings_about_copyright">© 2026</string>
+    <string name="settings_clear_data">Очистить все данные</string>
+    <string name="settings_clear_confirm">Все проекты и задачи будут удалены</string>
+    <string name="settings_data_cleared">Данные очищены</string>
+
+    <!-- SCR-09 Empty Project -->
+    <string name="empty_graph_title">Здесь будет ваш граф задач</string>
+    <string name="empty_graph_subtitle">Создайте первую задачу, чтобы начать строить граф проекта</string>
+    <string name="empty_graph_cta">Добавить первую задачу</string>
+    <string name="empty_graph_hint">Или нажмите + в правом нижнем углу</string>
+
+    <!-- Common -->
+    <string name="back">Назад</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_project_title">Удалить проект?</string>
+    <string name="delete_project_message">Удалить проект «%1$s» и все его задачи?</string>
+    <string name="delete_task_message">Задача и все её связи будут удалены без возможности восстановления.</string>
+    <string name="task_edit_delete">Удалить задачу</string>
+    <string name="cancel">Отмена</string>
+    <string name="done">Готово</string>
+    <string name="loading">Загрузка…</string>
 </resources>

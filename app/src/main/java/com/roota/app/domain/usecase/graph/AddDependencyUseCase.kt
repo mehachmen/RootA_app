@@ -17,7 +17,7 @@ class AddDependencyUseCase @Inject constructor(
 
         // Проверка на циклическую зависимость
         if (detectCycleUseCase.invoke(sourceTaskId, targetTaskId)) {
-            throw IllegalArgumentException("Создание этой связи приведёт к циклической зависимости!")
+            throw IllegalArgumentException("Циклическая зависимость невозможна!")
         }
 
         val dependency = Dependency(

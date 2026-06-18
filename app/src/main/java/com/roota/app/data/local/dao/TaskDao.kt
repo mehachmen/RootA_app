@@ -1,6 +1,7 @@
 package com.roota.app.data.local.dao
 
 import androidx.room.*
+import com.roota.app.data.local.entity.ProjectTaskStats
 import com.roota.app.data.local.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -8,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 interface TaskDao {
     @Query("SELECT * FROM tasks WHERE projectId = :projectId")
     fun getTasksByProject(projectId: Long): Flow<List<TaskEntity>>
+
+    @Query("SELECT * FROM tasks")
+    fun getAllTasks(): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     suspend fun getTaskById(id: Long): TaskEntity?
@@ -20,4 +24,11 @@ interface TaskDao {
 
     @Delete
     suspend fun deleteTask(task: TaskEntity)
+
+    @Query("""
+        SELECT projectId, COUNT(*) as taskCount,
+        SUM(CASE WHEN status = 'COMPLETED' THEN 1 ELSE 0 END) as completedCount
+        FROM tasks GROUP BY projectId
+    """)
+    fun getTaskStatsByProject(): Flow<List<ProjectTaskStats>>
 }

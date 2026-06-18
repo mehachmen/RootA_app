@@ -3,8 +3,8 @@ package com.roota.app.presentation.task_detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.roota.app.domain.model.Task
-import com.roota.app.domain.model.TaskStatus
-import com.roota.app.domain.usecase.task.UpdateTaskUseCase
+import com.roota.app.domain.repository.DependencyRepository
+import com.roota.app.domain.usecase.task.GetTaskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailViewModel @Inject constructor(
-    private val updateTaskUseCase: UpdateTaskUseCase
-    // private val getTaskUseCase: GetTaskUseCase  // добавим позже
+    private val getTaskUseCase: GetTaskUseCase,
+    private val dependencyRepository: DependencyRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(TaskDetailState())
@@ -22,56 +22,32 @@ class TaskDetailViewModel @Inject constructor(
 
     fun loadTask(taskId: Long) {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true, error = null)
 
-            // TODO: Подключить GetTaskUseCase
+            val task = getTaskUseCase(taskId)
+            val parentTasks = if (task != null) {
+                val deps = dependencyRepository.getDependenciesForTaskOnce(taskId)
+                    .filter { it.targetTaskId == taskId }
+                deps.mapNotNull { dep -> getTaskUseCase(dep.sourceTaskId) }
+            } else emptyList()
+
             _state.value = _state.value.copy(
-                task = Task(
-                    id = taskId,
-                    projectId = 1,
-                    title = "Пример задачи",
-                    description = "Это описание задачи...",
-                    status = TaskStatus.IN_PROGRESS,
-                    posX = 200f,
-                    posY = 200f
-                ),
-                isLoading = false
+                task = task,
+                parentTasks = parentTasks,
+                isLoading = false,
+                error = if (task == null) "Задача не найдена" else null
             )
         }
     }
 
-    fun updateTitle(title: String) {
-        _state.value = _state.value.copy(
-            task = _state.value.task?.copy(title = title)
-        )
-    }
-
-    fun updateDescription(description: String) {
-        _state.value = _state.value.copy(
-            task = _state.value.task?.copy(description = description)
-        )
-    }
-
-    fun updateStatus(status: TaskStatus) {
-        _state.value = _state.value.copy(
-            task = _state.value.task?.copy(status = status)
-        )
-    }
-
-    fun saveChanges() {
-        viewModelScope.launch {
-            _state.value.task?.let { task ->
-                try {
-                    updateTaskUseCase(task)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
+    fun clearError() {
+        _state.value = _state.value.copy(error = null)
     }
 }
 
 data class TaskDetailState(
     val task: Task? = null,
-    val isLoading: Boolean = false
+    val parentTasks: List<Task> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
 )

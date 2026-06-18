@@ -10,6 +10,11 @@ object ProjectMapper {
             id = entity.id,
             title = entity.title,
             description = entity.description,
+            colorTagArgb = entity.colorTagArgb,
+            linkColorArgb = entity.linkColorArgb,
+            graphScale = entity.graphScale,
+            graphOffsetX = entity.graphOffsetX,
+            graphOffsetY = entity.graphOffsetY,
             createdAt = entity.createdAt
         )
     }
@@ -19,6 +24,11 @@ object ProjectMapper {
             id = domain.id,
             title = domain.title,
             description = domain.description,
+            colorTagArgb = domain.colorTagArgb,
+            linkColorArgb = domain.linkColorArgb,
+            graphScale = domain.graphScale,
+            graphOffsetX = domain.graphOffsetX,
+            graphOffsetY = domain.graphOffsetY,
             createdAt = domain.createdAt,
             updatedAt = System.currentTimeMillis()
         )

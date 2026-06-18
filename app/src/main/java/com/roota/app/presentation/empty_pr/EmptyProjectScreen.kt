@@ -1,47 +1,62 @@
 package com.roota.app.presentation.empty_pr
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.roota.app.R
+import com.roota.app.presentation.ui.components.DotGridBackground
+import com.roota.app.presentation.ui.theme.AccentGreen
+import com.roota.app.presentation.ui.theme.ButtonShape
+import com.roota.app.presentation.ui.theme.Dimens
+import com.roota.app.presentation.ui.theme.TextPrimary
+import com.roota.app.presentation.ui.theme.TextSecondary
 
 @Composable
 fun EmptyProjectScreen(
     onAddFirstTaskClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        DotGridBackground(modifier = Modifier.fillMaxSize())
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(32.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp)
         ) {
-            // Иконка пустого состояния (можно заменить на Image или Icon)
             Text(
-                text = "🌿",
-                fontSize = 80.sp,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
-
-            Text(
-                text = "Здесь пока пусто",
+                text = stringResource(R.string.empty_graph_title),
                 style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center
+                color = TextPrimary,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Создайте первую задачу, чтобы начать строить граф проекта",
+                text = stringResource(R.string.empty_graph_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = TextSecondary
             )
 
             Spacer(modifier = Modifier.height(48.dp))
@@ -50,21 +65,26 @@ fun EmptyProjectScreen(
                 onClick = onAddFirstTaskClick,
                 modifier = Modifier
                     .width(280.dp)
-                    .height(56.dp),
-                shape = MaterialTheme.shapes.medium
+                    .height(Dimens.buttonHeight),
+                shape = ButtonShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AccentGreen,
+                    contentColor = Color.Black
+                )
             ) {
                 Text(
-                    "Добавить первую задачу",
-                    style = MaterialTheme.typography.titleMedium
+                    text = stringResource(R.string.empty_graph_cta),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Или нажмите + в правом нижнем углу",
+                text = stringResource(R.string.empty_graph_hint),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = TextSecondary
             )
         }
     }

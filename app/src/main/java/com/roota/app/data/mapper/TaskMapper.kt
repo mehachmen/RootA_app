@@ -2,6 +2,7 @@ package com.roota.app.data.mapper
 
 import com.roota.app.data.local.entity.TaskEntity
 import com.roota.app.domain.model.Task
+import com.roota.app.domain.model.TaskPriority
 import com.roota.app.domain.model.TaskStatus
 
 object TaskMapper {
@@ -13,6 +14,9 @@ object TaskMapper {
             title = entity.title,
             description = entity.description,
             status = TaskStatus.valueOf(entity.status),
+            priority = runCatching { TaskPriority.valueOf(entity.priority) }
+                .getOrDefault(TaskPriority.MEDIUM),
+            deadline = entity.deadline,
             posX = entity.posX,
             posY = entity.posY,
             createdAt = entity.createdAt,
@@ -27,6 +31,8 @@ object TaskMapper {
             title = domain.title,
             description = domain.description,
             status = domain.status.name,
+            priority = domain.priority.name,
+            deadline = domain.deadline,
             posX = domain.posX,
             posY = domain.posY,
             createdAt = domain.createdAt,

@@ -21,8 +21,18 @@ class ProjectRepositoryImpl @Inject constructor(
     override suspend fun getProjectById(id: Long): Project? =
         projectDao.getProjectById(id)?.let { mapper.toDomain(it) }
 
-    override suspend fun createProject(title: String, description: String?): Long {
-        val project = Project(title = title, description = description)
+    override suspend fun createProject(
+        title: String,
+        description: String?,
+        colorTagArgb: Long,
+        linkColorArgb: Long
+    ): Long {
+        val project = Project(
+            title = title,
+            description = description,
+            colorTagArgb = colorTagArgb,
+            linkColorArgb = linkColorArgb
+        )
         return projectDao.insertProject(mapper.toEntity(project))
     }
 
