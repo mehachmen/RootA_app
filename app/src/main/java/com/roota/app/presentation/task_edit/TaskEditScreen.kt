@@ -138,7 +138,9 @@ fun TaskEditScreen(
                     RootATextField(
                         value = task.title,
                         onValueChange = viewModel::updateTitle,
-                        label = stringResource(R.string.task_edit_name_label)
+                        label = stringResource(R.string.task_edit_name_label),
+                        isError = state.titleError != null,
+                        supportingText = state.titleError
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.itemSpacing))
@@ -221,7 +223,7 @@ fun TaskEditScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(Dimens.buttonHeight),
-                        enabled = task.title.isNotBlank() && !state.isLoading,
+                        enabled = !state.isLoading,
                         shape = ButtonShape,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = AccentGreen,

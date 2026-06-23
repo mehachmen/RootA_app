@@ -18,7 +18,7 @@ class CreateProjectViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun onTitleChange(title: String) {
-        _state.value = _state.value.copy(title = title)
+        _state.value = _state.value.copy(title = title, titleError = null)
     }
 
     fun onDescriptionChange(description: String) {
@@ -35,7 +35,11 @@ class CreateProjectViewModel @Inject constructor(
 
     fun createProject(onCreated: (Long) -> Unit) {
         viewModelScope.launch {
-            if (state.value.title.isBlank()) return@launch
+            if (state.value.title.isBlank()) {
+                val message = "Название проекта не может быть пустым"
+                _state.value = _state.value.copy(titleError = message, error = message)
+                return@launch
+            }
             _state.value = _state.value.copy(isLoading = true, error = null)
             try {
                 val projectId = createProjectUseCase(
@@ -54,6 +58,10 @@ class CreateProjectViewModel @Inject constructor(
             }
         }
     }
+
+    fun clearError() {
+        _state.value = _state.value.copy(error = null)
+    }
 }
 
 data class CreateProjectState(
@@ -62,5 +70,6 @@ data class CreateProjectState(
     val colorTagArgb: Long = 0xFF39FF14L,
     val linkColorArgb: Long = 0xFF448AFFFFL,
     val isLoading: Boolean = false,
+    val titleError: String? = null,
     val error: String? = null
 )

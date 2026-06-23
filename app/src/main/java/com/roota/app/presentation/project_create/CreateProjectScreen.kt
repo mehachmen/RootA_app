@@ -51,7 +51,10 @@ fun CreateProjectScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(state.error) {
-        state.error?.let { snackbarHostState.showSnackbar(it) }
+        state.error?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearError()
+        }
     }
 
     Scaffold(
@@ -81,7 +84,9 @@ fun CreateProjectScreen(
             RootATextField(
                 value = state.title,
                 onValueChange = viewModel::onTitleChange,
-                label = stringResource(R.string.create_project_name_hint)
+                label = stringResource(R.string.create_project_name_hint),
+                isError = state.titleError != null,
+                supportingText = state.titleError
             )
 
             Spacer(modifier = Modifier.height(Dimens.sectionSpacing))
@@ -128,12 +133,12 @@ fun CreateProjectScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(Dimens.buttonHeight),
-                enabled = state.title.isNotBlank() && !state.isLoading,
+                enabled = !state.isLoading,
                 shape = ButtonShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (state.title.isNotBlank()) AccentGreen else DarkBackground,
-                    contentColor = if (state.title.isNotBlank()) Color.Black else TextSecondary,
-                    disabledContainerColor = DarkBackground
+                    containerColor = AccentGreen,
+                    contentColor = Color.Black,
+                    disabledContainerColor = AccentGreen.copy(alpha = 0.5f)
                 )
             ) {
                 if (state.isLoading) {

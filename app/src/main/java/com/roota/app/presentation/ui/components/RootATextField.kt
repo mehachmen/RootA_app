@@ -21,7 +21,9 @@ fun RootATextField(
     label: String,
     modifier: Modifier = Modifier,
     minLines: Int = 1,
-    singleLine: Boolean = minLines == 1
+    singleLine: Boolean = minLines == 1,
+    isError: Boolean = false,
+    supportingText: String? = null
 ) {
     OutlinedTextField(
         value = value,
@@ -30,6 +32,8 @@ fun RootATextField(
         modifier = modifier.fillMaxWidth(),
         minLines = minLines,
         singleLine = singleLine,
+        isError = isError,
+        supportingText = supportingText?.let { { Text(it) } },
         shape = TextFieldShape,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences

@@ -95,7 +95,8 @@ class TaskEditViewModel @Inject constructor(
 
     fun updateTitle(title: String) {
         _state.value = _state.value.copy(
-            task = _state.value.task?.copy(title = title)
+            task = _state.value.task?.copy(title = title),
+            titleError = null
         )
     }
 
@@ -140,7 +141,11 @@ class TaskEditViewModel @Inject constructor(
     fun saveTask(projectId: Long, onSuccess: () -> Unit) {
         viewModelScope.launch {
             val task = _state.value.task ?: return@launch
-            if (task.title.isBlank()) return@launch
+            if (task.title.isBlank()) {
+                val message = "Название задачи не может быть пустым"
+                _state.value = _state.value.copy(titleError = message, error = message)
+                return@launch
+            }
 
             val deadline = DateFormatters.parseDeadlineInput(_state.value.deadlineInput)
             val validationError = if (_state.value.deadlineInput.isNotBlank()) {
@@ -243,5 +248,6 @@ data class TaskEditState(
     val availableTasks: List<Task> = emptyList(),
     val selectedParentIds: List<Long> = emptyList(),
     val deadlineInput: String = "",
+    val titleError: String? = null,
     val error: String? = null
 )
